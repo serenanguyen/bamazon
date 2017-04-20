@@ -170,4 +170,3 @@ var newProduct = function(){
   });
 
 };
-module.exports = bamazonManager;
