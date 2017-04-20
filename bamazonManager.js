@@ -42,9 +42,17 @@ var view = function(){
   // select all items from products
   connection.query("SELECT * FROM products", function(err, res){
   if(err) throw err;
+  var Table = require("cli-table");
+  var table = new Table({
+      head: ['ID', 'Item', 'Price', 'Stock']
+    , colWidths: [10, 20, 10, 10]
+  });
+  // for each result print a new array
   for(var i = 0; i < res.length; i++){
-    console.log(res[i].itemID + " | " +res[i].productName + " | " + res[i].price + " | " + res[i].stockQuantity);
+    table.push([res[i].itemID, res[i].productName, res[i].price, res[i].stockQuantity])
     }
+    // print table to terminal
+  console.log(table.toString());
     start();
   });
 
@@ -54,9 +62,17 @@ var low = function(){
   // select all items from products where stock is less than 5
   connection.query("SELECT * FROM products WHERE stockQuantity < 5", function(err,res){
     if(err) throw err;
+    var Table = require("cli-table");
+    var table = new Table({
+        head: ['ID', 'Item', 'Price', 'Stock']
+      , colWidths: [10, 20, 10, 10]
+    });
+    // for each result print a new array
     for(var i = 0; i < res.length; i++){
-      console.log(res[i].itemID + " | " +res[i].productName + " | " + res[i].stockQuantity);
+      table.push([res[i].itemID, res[i].productName, res[i].price, res[i].stockQuantity])
       }
+      // print table to terminal
+    console.log(table.toString());
     start();
   });
 };
@@ -64,9 +80,17 @@ var low = function(){
 var add = function(){
   connection.query("SELECT * FROM products", function(err, res){
   if(err) throw err;
+  var Table = require("cli-table");
+  var table = new Table({
+      head: ['ID', 'Item', 'Price', 'Stock']
+    , colWidths: [10, 20, 10, 10]
+  });
+  // for each result print a new array
   for(var i = 0; i < res.length; i++){
-    console.log(res[i].itemID + " | " +res[i].productName + " | " + res[i].price + " | " + res[i].stockQuantity);
+    table.push([res[i].itemID, res[i].productName, res[i].price, res[i].stockQuantity])
     }
+    // print table to terminal
+  console.log(table.toString());
     inquirer.prompt([{
       name: "item",
       type: "input",
@@ -93,7 +117,15 @@ var add = function(){
       connection.query("SELECT productName FROM products WHERE ?", {itemID: answer.item}, function(err,res){
         addItem = res[0].productName;
       });
-      console.log("You want to add "+addQuantity+" "+addItem+"s");
+      connection.query("SELECT stockQuantity FROM products WHERE ?", {itemID: answer.item}, function(err, res){
+        var stockQuantity = parseInt(res[0].stockQuantity);
+        var newQuantity = stockQuantity + addQuantity
+        console.log(newQuantity);
+        connection.query("UPDATE products SET stockQuantity = ? WHERE ?",[newQuantity,{itemID: answer.item}], function(err,res){});
+              console.log("You want to add "+addQuantity+" "+addItem+"s");
+        view();
+      })
+
     })
   });
 };
@@ -128,9 +160,13 @@ var newProduct = function(){
         return false;
     }
   }]).then(function(answer){
-    connection.query("INSERT INTO bamazonDB.products (productName, departmentName, price, stockQuantity) VALUES ?",[answer.newItem, answer.department, answer.price, answer.stock],function(err,res){
-      console.log(answer.newItem);
-    })
-  })
+    connection.query("INSERT INTO products SET ?",{
+      productName: answer.newItem,
+      departmentName: answer.department,
+      price: answer.price,
+      stockQuantity: answer.stock
+    },function(err,res){});
+    view();
+  });
 
 };

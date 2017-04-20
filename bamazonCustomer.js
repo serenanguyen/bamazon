@@ -1,5 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+var Table = require("cli-table");
 
 var connection = mysql.createConnection({
   host: "localhost",
@@ -33,9 +34,18 @@ var start = function(){
   //display all products
   connection.query("SELECT * FROM products", function(err, res){
     if(err) throw err;
+    // create new table
+    var Table = require("cli-table");
+    var table = new Table({
+        head: ['ID', 'Item', 'Price', 'Stock']
+      , colWidths: [10, 20, 10, 10]
+    });
+    // for each result print a new array
     for(var i = 0; i < res.length; i++){
-      console.log(res[i].itemID + " | " +res[i].productName + " | " + res[i].price + " | " + res[i].stockQuantity);
+      table.push([res[i].itemID, res[i].productName, res[i].price, res[i].stockQuantity])
       }
+      // print table to terminal
+    console.log(table.toString());
     inquirer.prompt([{
       name: "item",
       type: "input",
