@@ -6,7 +6,7 @@ CREATE TABLE products (
 	itemID INTEGER(11) AUTO_INCREMENT PRIMARY KEY,
     productName VARCHAR(45) NOT NULL,
     departmentName VARCHAR(45) NOT NULL,
-    price DECIMAL(10,2) NOT NULL,
+    price DECIMAL(10,4) NOT NULL,
     stockQuantity INTEGER(11) NOT NULL
 );
 
@@ -30,3 +30,4 @@ INSERT INTO products (productName, departmentName, price, stockQuantity)
 VALUES ("cargo shorts", "clothing", 25.00, 10);
 INSERT INTO products (productName, departmentName, price, stockQuantity)
 VALUES ("sweater", "clothing", 20.00, 10);
+
