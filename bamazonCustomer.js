@@ -1,20 +1,6 @@
-var mysql = require("mysql");
-var inquirer = require("inquirer");
-var Table = require("cli-table");
+var bamazonCustomer = function(){
 
-var connection = mysql.createConnection({
-  host: "localhost",
-  port: 8889,
-  user: "root",
-  password: "root",
-  database:"bamazonDB"
-});
-
-connection.connect(function(err){
-  if(err) throw err;
-  // console.log("connected");
-});
-
+}
 var restart = function(){
   inquirer.prompt({
     name: "continue",
@@ -89,3 +75,6 @@ var start = function(){
   });
 };
 start();
+
+
+module.exports = bamazonCustomer;

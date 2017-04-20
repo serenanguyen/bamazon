@@ -10,6 +10,13 @@ CREATE TABLE products (
     stockQuantity INTEGER(11) NOT NULL
 );
 
+CREATE TABLE departments (
+	departmentID INTEGER(11) AUTO_INCREMENT PRIMARY KEY,
+    departmentName VARCHAR(45) NOT NULL,
+    overheadCosts DECIMAL(10,4) NOT NULL,
+    totalSales DECIMAL(10,4) NOT NULL
+);
+
 INSERT INTO products (productName, departmentName, price, stockQuantity)
 VALUES ("flashlight", "hardware", 5.00, 10);
 INSERT INTO products (productName, departmentName, price, stockQuantity)
